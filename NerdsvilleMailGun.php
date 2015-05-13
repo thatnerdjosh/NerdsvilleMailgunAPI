@@ -1,7 +1,6 @@
 <?php
 
 class NerdsvilleMailGun{
-
     function __construct($from, $trackClicks, $trackOpens, $fileNames=null, $filetypes=null, $attachments=null, $isImage=false){
        $this->from = $from;
        $this->trackClicks = $trackClicks;
@@ -28,7 +27,6 @@ class NerdsvilleMailGun{
     }
 
     function setPostFields($to, $subject, $message="", $htmlMessage=""){
-        $attachment = $this->attachments[0];
         $postfields = array(
 		    "to"=>$to,
 		    "from"=>"FROM ADDRESS",
