@@ -31,8 +31,8 @@ class NerdsvilleMailGun{
         $attachment = $this->attachments[0];
         $postfields = array(
 		    "to"=>$to,
-		    "from"=>"quotes@cubic-zirconia-jewelry.com",
-		    "subject"=>"Custom Quote Requested",
+		    "from"=>"FROM ADDRESS",
+		    "subject"=>$subject,
 		    "text"=>$message,
 		    "html"=>$htmlMessage=="" ? $message : $htmlMessage,
 		    "o:tracking-clicks"=>$this->trackClicks ? "yes" : "no",
@@ -48,7 +48,6 @@ class NerdsvilleMailGun{
    }
 	   
    function initializeCurl($postfields){
-	//$curlURL = "https://api.mailgun.net/v3/cubic-zirconia-jewelry.com";
 	$curlURL = "https://api.mailgun.net/v{VERSION HERE}/{DOMAIN NAME HERE}";
         $curlURL .= "/messages"; //Using messages API endpoint for POST
 	$headers = $isImage ? array("Content-Type:multipart/form-data") : array();
@@ -65,9 +64,9 @@ class NerdsvilleMailGun{
 
 	$info = curl_getinfo($ch);
 	if(!curl_errno($ch) || $info['http_code'] != 200) {
-	    print 'Your quote is now pending review from the administrator, feel free to hit the back arrow and continue browsing :)';
+	    print 'SUCCESS!';
 	} else {
-	    print 'Your quote was unable to be sent, please contact the system administrator.<br/>'. curl_error($ch);
+	    print 'CAN HAZ ERROR?!?!?' . curl_error($ch);
 	}
 	curl_close($ch);
     }
