@@ -1,8 +1,11 @@
 <?php
 
 class NerdsvilleMailGun{
-    function __construct($from, $trackClicks, $trackOpens, $fileNames=null, $filetypes=null, $attachments=null, $isImage=false){
+    function __construct($from, $apiVersion, $domain, $secret, $trackClicks, $trackOpens, $fileNames=null, $filetypes=null, $attachments=null, $isImage=false){
        $this->from = $from;
+       $this->apiVersion = $apiVersion;
+       $this->domain = $domain;
+       $this->secret = $secret;
        $this->trackClicks = $trackClicks;
        $this->trackOpens = $trackOpens;
        $this->attachments = $attachments;
@@ -29,7 +32,7 @@ class NerdsvilleMailGun{
     function setPostFields($to, $subject, $message="", $htmlMessage=""){
         $postfields = array(
 		    "to"=>$to,
-		    "from"=>"FROM ADDRESS",
+		    "from"=>$from,
 		    "subject"=>$subject,
 		    "text"=>$message,
 		    "html"=>$htmlMessage=="" ? $message : $htmlMessage,
@@ -46,14 +49,14 @@ class NerdsvilleMailGun{
    }
 	   
    function initializeCurl($postfields){
-	$curlURL = "https://api.mailgun.net/v{VERSION HERE}/{DOMAIN NAME HERE}";
+	$curlURL = "https://api.mailgun.net/v" + $this->apiVersion+"/" + $this->domain;
         $curlURL .= "/messages"; //Using messages API endpoint for POST
 	$headers = $isImage ? array("Content-Type:multipart/form-data") : array();
         $ch = curl_init();
 
 	/*CURL OPTIONS*/
 	curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-	curl_setopt($ch, CURLOPT_USERPWD, 'api:SECRET-KEY-HERE');
+	curl_setopt($ch, CURLOPT_USERPWD, 'api:' + $this->secret);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
 	curl_setopt($ch, CURLOPT_URL, $curlURL);
